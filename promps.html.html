@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador de Gastos</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #eef2f3;
+        }
+    </style>
+</head>
+
+<body class="p-6 min-h-screen flex items-center justify-center">
+
+    <div class="w-full max-w-4xl bg-white shadow-2xl rounded-3xl p-8">
+        
+        <!-- TÍTULO -->
+        <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-6">
+            Administrador de Gastos 💰
+        </h1>
+        <p class="text-center text-gray-600 mb-10">
+            Registra tus gastos y visualiza el total en tiempo real.
+        </p>
+
+        <!-- FORMULARIO DE ENTRADA -->
+        <div class="bg-blue-50 border border-blue-300 rounded-2xl p-6 mb-10">
+            <h2 class="text-xl font-bold text-blue-700 mb-4">Agregar gasto</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="font-semibold">Descripción:</label>
+                    <input id="desc" type="text" placeholder="Ej. Papitas"
+                        class="w-full p-3 mt-1 rounded-lg border border-gray-300">
+                </div>
+
+                <div>
+                    <label class="font-semibold">Monto (MXN):</label>
+                    <input id="amount" type="number" placeholder="Ej. 25"
+                        class="w-full p-3 mt-1 rounded-lg border border-gray-300">
+                </div>
+            </div>
+
+            <button id="addBtn"
+                class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition">
+                Agregar Gasto
+            </button>
+        </div>
+
+        <!-- LISTA DE GASTOS -->
+        <div class="bg-green-50 border border-green-300 rounded-2xl p-6 mb-10">
+            <h2 class="text-xl font-bold text-green-700 mb-4">Gastos Registrados</h2>
+
+            <ul id="gastosList" class="space-y-3 text-gray-700 font-medium">
+                <!-- Los gastos aparecerán aquí -->
+            </ul>
+        </div>
+
+        <!-- TOTAL -->
+        <div class="bg-gray-900 text-center rounded-2xl p-6">
+            <h2 class="text-xl text-green-400 font-bold">TOTAL:</h2>
+            <p id="total" class="text-4xl font-extrabold text-white mt-2">$0.00</p>
+        </div>
+
+    </div>
+
+    <!-- LÓGICA EN JAVASCRIPT -->
+    <script>
+        const descInput = document.getElementById('desc');
+        const amountInput = document.getElementById('amount');
+        const addBtn = document.getElementById('addBtn');
+        const gastosList = document.getElementById('gastosList');
+        const totalDisplay = document.getElementById('total');
+
+        let total = 0;
+
+        addBtn.addEventListener('click', () => {
+            const desc = descInput.value.trim();
+            const amount = parseFloat(amountInput.value.trim());
+
+            if (desc === "" || isNaN(amount) || amount <= 0) {
+                alert("Por favor completa ambos campos correctamente.");
+                return;
+            }
+
+            // Agregar a la lista
+            const item = document.createElement("li");
+            item.className = "p-3 bg-white shadow-md rounded-xl flex justify-between";
+            item.innerHTML = `
+                <span>${desc}</span>
+                <span class="font-bold">$${amount.toFixed(2)}</span>
+            `;
+            gastosList.appendChild(item);
+
+            // Sumar al total
+            total += amount;
+            totalDisplay.textContent = "$" + total.toFixed(2);
+
+            // Limpiar entradas
+            descInput.value = "";
+            amountInput.value = "";
+        });
+    </script>
+
+</body>
+</html>
